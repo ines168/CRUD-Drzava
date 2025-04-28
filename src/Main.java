@@ -63,6 +63,10 @@ public class Main {
         Statement stmt = connection.createStatement();
         System.out.println("Upiši naziv nove države:");
         String nazivDrzave = sc.nextLine().trim();
+        if(nazivDrzave.isEmpty()) {
+            System.err.println("Naziv ne može biti prazan.");
+            return;
+        }
         //check if exists
         ResultSet foundDrzava = stmt.executeQuery(String.format("SELECT COUNT(*) FROM Drzava WHERE Naziv = '%s'", nazivDrzave));
         if(foundDrzava.next()) {
