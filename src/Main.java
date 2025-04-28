@@ -90,6 +90,12 @@ public class Main {
         }
         System.out.println("Upiši novi naziv države:");
         String nazivDrzave = sc.next();
+        //check if exists
+        ResultSet foundDrzava = stmt.executeQuery(String.format("SELECT COUNT(*) FROM Drzava WHERE Naziv = '%s'", nazivDrzave));
+        if(foundDrzava.next() && foundDrzava.getInt(1) > 0) {
+            System.err.println("Država s tim nazivom već postoji!");
+            return;
+        }
         String sql = String.format("UPDATE Drzava SET Naziv = '%s' WHERE IDDrzava = %s", nazivDrzave, idDrzave);
         int rowAffected = stmt.executeUpdate(sql);
         System.out.println(rowAffected > 0 ? "Država je uspješno preimenovana!" : "Nije pronađena država!");
