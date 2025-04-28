@@ -62,7 +62,13 @@ public class Main {
     public static void createDrzava(Connection connection, Scanner sc) throws SQLException {
         Statement stmt = connection.createStatement();
         System.out.println("Upiši naziv nove države:");
-        String nazivDrzave = sc.nextLine();
+        String nazivDrzave = sc.nextLine().trim();
+        //check if exists
+        ResultSet foundDrzava = stmt.executeQuery(String.format("SELECT COUNT(*) FROM Drzava WHERE Naziv = '%s'", nazivDrzave));
+        if(foundDrzava.next()) {
+            System.err.println("Država već postoji!");
+            return;
+        }
         String sql = String.format("INSERT INTO Drzava(Naziv) VALUES ('%s')", nazivDrzave);
         int rowAffected = stmt.executeUpdate(sql);
         System.out.println(rowAffected > 0 ? "Država je uspješno unesena!" : "Nije unešena država!");
