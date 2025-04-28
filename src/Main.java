@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -18,8 +19,15 @@ public class Main {
             while (true) {
                 ispisMenija();
                 System.out.print("Vaš izbor: ");
-                int izbor = sc.nextInt();
-                sc.nextLine(); //očisti nextInt enter
+                int izbor;
+                try {
+                    izbor = sc.nextInt();
+                    sc.nextLine(); //očisti nextInt enter
+                } catch (InputMismatchException e) {
+                    System.err.println("Greška! Molim unesi broj!");
+                    sc.nextLine(); //clear endless loop
+                    continue;
+                }
 
                 switch (izbor) {
                     case 1 -> createDrzava(connection, sc);
