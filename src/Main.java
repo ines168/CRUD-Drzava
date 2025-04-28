@@ -69,7 +69,7 @@ public class Main {
         }
         //check if exists
         ResultSet foundDrzava = stmt.executeQuery(String.format("SELECT COUNT(*) FROM Drzava WHERE Naziv = '%s'", nazivDrzave));
-        if(foundDrzava.next()) {
+        if(foundDrzava.next() && foundDrzava.getInt(1) > 0) {
             System.err.println("Država već postoji!");
             return;
         }
@@ -82,6 +82,12 @@ public class Main {
         Statement stmt = connection.createStatement();
         System.out.println("Upiši ID države koju želiš izmijeniti:");
         int idDrzave = sc.nextInt();
+        //check if exists
+        ResultSet foundID = stmt.executeQuery(String.format("SELECT COUNT(*) FROM Drzava WHERE IDDrzava = '%s'", idDrzave));
+        if(foundID.next() && foundID.getInt(1) == 0) {
+            System.err.println("Država s tim ID-em ne postoji!");
+            return;
+        }
         System.out.println("Upiši novi naziv države:");
         String nazivDrzave = sc.next();
         String sql = String.format("UPDATE Drzava SET Naziv = '%s' WHERE IDDrzava = %s", nazivDrzave, idDrzave);
